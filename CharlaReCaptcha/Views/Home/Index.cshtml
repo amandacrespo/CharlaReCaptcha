@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@using Microsoft.Extensions.Options
+@inject IOptions<reCAPTCHASettings> reCaptchaSettings
+
+<h1>Validar con Recaptcha</h1>
+
+<form id="form" method="post" action="@Url.Action("SubmitForm", "Home")">
+    <!-- Otros campos del formulario -->
+    <!-- Campo oculto para el token de reCAPTCHA -->
+    <input type="hidden" id="recaptcha-token" name="recaptchaToken" />
+
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+
+<script src="https://www.google.com/recaptcha/api.js?render=@reCaptchaSettings.Value.SiteKey"></script>
+<script>
+    grecaptcha.ready(function () {
+        grecaptcha.execute('@reCaptchaSettings.Value.SiteKey', { action: 'submit' }).then(function (token) {
+            // Insertar el token en el campo oculto antes de enviar el formulario
+            document.getElementById("recaptcha-token").value = token;
+        });
+    });
+</script>
