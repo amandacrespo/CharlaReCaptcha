@@ -7,19 +7,23 @@
 
 <h1>Validar con Recaptcha</h1>
 
+<!-- Formulario de ejemplo -->
 <form id="form" method="post" action="@Url.Action("SubmitForm", "Home")">
-    <!-- Otros campos del formulario -->
-    <!-- Campo oculto para el token de reCAPTCHA -->
+    <!-- Aquí podrían ir otros campos del formulario -->
+    <!-- Campo oculto para almacenar el token de reCAPTCHA generado -->
     <input type="hidden" id="recaptcha-token" name="recaptchaToken" />
 
+    <!-- Botón de envío del formulario -->
     <button type="submit" class="btn btn-primary">Enviar</button>
 </form>
 
+<!-- Carga la API de Google reCAPTCHA v3 con la clave del sitio -->
 <script src="https://www.google.com/recaptcha/api.js?render=@reCaptchaSettings.Value.SiteKey"></script>
 <script>
     grecaptcha.ready(function () {
+        // Ejecuta reCAPTCHA cuando la página está lista y obtiene un token
         grecaptcha.execute('@reCaptchaSettings.Value.SiteKey', { action: 'submit' }).then(function (token) {
-            // Insertar el token en el campo oculto antes de enviar el formulario
+            // Inserta el token en el campo oculto antes de enviar el formulario
             document.getElementById("recaptcha-token").value = token;
         });
     });

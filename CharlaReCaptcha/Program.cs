@@ -3,10 +3,12 @@ using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<reCAPTCHASettings>(builder.Configuration.GetSection("reCAPTCHA"));
-
 builder.Services.AddControllersWithViews();
-builder.Services.AddTransient<reCAPTCHAService>(); // Registrar el servicio de reCAPTCHA
+
+// Configura la inyección de dependencias para reCAPTCHA
+builder.Services.Configure<reCAPTCHASettings>(builder.Configuration.GetSection("reCAPTCHA"));
+// Registra el servicio de validación de reCAPTCHA
+builder.Services.AddTransient<reCAPTCHAService>();
 
 var app = builder.Build();
 
